@@ -7,40 +7,35 @@ namespace Task4
     {
         static void Main(string[] args)
         {
-            XElement Contact = new XElement("Contact");
-            XElement Address = new XElement("Address");
-            XElement Street = new XElement("Street");
-            XElement HouseNumber = new XElement("HouseNumber");
-            XElement FlatNumber = new XElement("FlatNumber");
-            XElement Phones = new XElement("Phones");
-            XElement MobilePhone = new XElement("MobilePhone");
-            XElement FlatPhone = new XElement("FlatPhone");
             string path = "ContactBook.xml";
-
             Write("Введите ФИО контакта: ");
-            XAttribute xFIO = new XAttribute("ФИО",ReadLine());
+            string someFIO = ReadLine();
             Write("Введите улицу: ");
-            XAttribute xStreet = new XAttribute("Улица", ReadLine());
+            string someStreet = ReadLine();
             Write("Введите номер дома: ");
-            XAttribute xHouseNumber = new XAttribute("Дом", ReadLine());
+            int someHouseNumber = int.Parse(ReadLine());
             Write("Введите номер квартиры: ");
-            XAttribute xFlatNumber = new XAttribute("Квартира", ReadLine());
+            int someFlatNumber = int.Parse(ReadLine());
             Write("Введите номер мобильного телефона: ");
-            XAttribute xMobilePhone = new XAttribute("Мобильный", ReadLine());
+            int someMobilePhone = int.Parse(ReadLine());
             Write("Введите номер домашнего телефона: ");
-            XAttribute xFlatPhone = new XAttribute("Домашний", ReadLine());
+            int someFlatPhone = int.Parse(ReadLine());
 
-            MobilePhone.Add(xMobilePhone);
-            FlatPhone.Add(xFlatPhone);
-            Street.Add(xStreet);
-            HouseNumber.Add(xHouseNumber);
-            FlatNumber.Add(xFlatNumber);
+            XElement Contact = new XElement("Contact");
+            XElement Address = new XElement("Address",
+                new XElement("Street",someStreet),
+                new XElement("HouseNumber",someHouseNumber),
+                new XElement("FlatNumber",someFlatNumber)
+                );
+            XElement Phones = new XElement("Phones",
+                new XElement("MobilePhone", someMobilePhone),
+                new XElement("FlatPhone",someFlatPhone)
+                );
+            XAttribute xFIO = new XAttribute("ФИО", someFIO);
 
-            Phones.Add(MobilePhone, FlatPhone);
-            Address.Add(Street, HouseNumber, FlatNumber);
-            Contact.Add(Address, Phones,xFIO);
-
+            Contact.Add(Address, Phones, xFIO);
             Contact.Save(path);
+
             ReadLine();
         }
     }
